@@ -18,6 +18,7 @@ public class SudokuBoard {
         }
     }
 
+    //gets the square in the selected row,col in the main grid
     public SudokuSquare getSquare(int row, int col) {
         //check for valid square
         if(row < 0 || col < 0 || row > rows() || col > cols())
@@ -27,17 +28,23 @@ public class SudokuBoard {
         return matrix[row][col];
     }
 
+    //return
     public int getN() {
         return n;
     }
 
     /**
-     * Grids follow the following patter
+     * Subgrids follow the following pattern
      *
      *  0 1 2 ... n
      *  3 4 5 ... n
+     *  .
+     *  .
+     *  . . . . . row/n * n + col/n
      *
-     *  Each grid has n numbers and is n*n in size
+     *  Each subgrid has n numbers and is n*n in size
+     *
+     *  Returns the subgrid that the selected row and column lies in
      */
     public int getSubGrid(int row, int col) {
         return (row / n) * n + col/n;
