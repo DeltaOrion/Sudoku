@@ -7,6 +7,7 @@ public class SudokuSquare {
     //whether this is a starting square, i.e. it can't be changed throughout the game
     private boolean startSquare;
 
+
     public SudokuSquare(int value, boolean startSquare) {
         this.value = value;
         this.startSquare = startSquare;

@@ -5,12 +5,19 @@ public class SudokuBoard {
     //the size of each subgrid, following logical rules this means that the entire matrix
     //should be n*n
     private final int n;
+    private final int subGrids;
     private final SudokuSquare[][] matrix;
 
     public SudokuBoard(int n) {
+        //set n and subgrids
         this.n = n;
+        double sqrt = Math.sqrt(n);
+        if(sqrt - Math.floor(sqrt)!=0)
+            throw new IllegalArgumentException("n is not a perfect square");
+
+        this.subGrids = (int) sqrt;
         //initialize matrix with empty sudoku squares
-        this.matrix = new SudokuSquare[n * n][n * n];
+        this.matrix = new SudokuSquare[n][n];
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length; j++) {
                 matrix[i][j] = new SudokuSquare();
@@ -28,7 +35,8 @@ public class SudokuBoard {
         return matrix[row][col];
     }
 
-    //return
+    //This represents the amount of rows, columns and numbers
+    //in each subgrid
     public int getN() {
         return n;
     }
@@ -40,33 +48,29 @@ public class SudokuBoard {
      *  3 4 5 ... n
      *  .
      *  .
-     *  . . . . . row/n * n + col/n
+     *  . . . . . row/subGrids * n + col/subGrids
      *
-     *  Each subgrid has n numbers and is n*n in size
+     *  Each subgrid has n numbers and is thus n in size
      *
      *  Returns the subgrid that the selected row and column lies in
      */
     public int getSubGrid(int row, int col) {
-        return (row / n) * n + col/n;
-    }
-
-    private int boardSize() {
-        return n*n;
+        return (row / subGrids) * subGrids + col/subGrids;
     }
 
     public int rows() {
-        return boardSize();
+        return n;
     }
 
     public int cols() {
-        return boardSize();
+        return n;
     }
 
     public boolean isSolved() {
-        boolean[][] colCheck = new boolean[cols()][boardSize()];
-        boolean[][] gridCheck = new boolean[boardSize()][boardSize()];
+        boolean[][] colCheck = new boolean[cols()][n];
+        boolean[][] gridCheck = new boolean[n][n];
         for(int row=0;row<rows();row++) {
-            boolean[] rowCheck = new boolean[boardSize()];
+            boolean[] rowCheck = new boolean[n];
             for(int col=0;col<cols();col++) {
                 SudokuSquare square = getSquare(row,col);
                 if(square.getValue()==0)
